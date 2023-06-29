@@ -23,8 +23,8 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
-    public void cadastrarProduto (ProdutosDTO produto) throws SQLException{
-        
+    public int cadastrarProduto (ProdutosDTO produto) {
+        int status;
         conn = new conectaDAO().connectDB();
         try {
             // Após inserir os dados no banco de dados, você pode exibir uma mensagem de sucesso
@@ -32,11 +32,12 @@ public class ProdutosDAO {
             prep.setString(1, produto.getNome());
             prep.setInt(2, produto.getValor());
             prep.setString(3, produto.getStatus());
-            prep.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+            status = prep.executeUpdate();
+            return status;
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar!");
+        } catch (SQLException e) {
+            System.out.println("Erro ao conectar: " + e.getMessage());
+            return e.getErrorCode();
         }
     }
     
